@@ -1,89 +1,327 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="HYPERDYNE - Beyond Physical AI, Hyper Physical Intelligence">
-  <title>HYPERDYNE | Beyond Physical AI</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="HYPERDYNE — Beyond Physical AI. 탄성구동기 기반 차세대 하이퍼 피지컬 인텔리전스." />
+  <meta name="theme-color" content="#000308" />
+  <title>HYPERDYNE — Beyond Physical AI</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
+
+  <link rel="icon" type="image/png" href="assets/brand/hyperdyne_logo_small.png" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="site-shell">
-    <header class="site-header" aria-label="Primary navigation">
-      <a class="brand" href="#" aria-label="HYPERDYNE home">HYPERDYNE</a>
 
-      <button class="nav-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
+  <!-- ============ STARFIELD CANVAS ============ -->
+  <canvas id="stars" aria-hidden="true"></canvas>
 
-      <nav class="main-nav" aria-label="Main menu">
-        <a href="#" data-pending>HYPERDYNE</a>
-        <a href="#" data-pending>TECHNOLOGY</a>
-        <a href="#" data-pending>PRODUCTS</a>
-        <a href="#" data-pending>APPLICATIONS</a>
-        <a href="#" data-pending>CONTACT</a>
-      </nav>
-    </header>
+  <!-- ============ FIXED ATMOSPHERIC LAYERS ============ -->
+  <div class="bg-grid" aria-hidden="true"></div>
+  <div class="bg-vignette" aria-hidden="true"></div>
+  <div class="bg-scanlines" aria-hidden="true"></div>
 
-    <main>
-      <section class="hero" aria-labelledby="hero-title">
-        <div class="hero-backdrop" aria-hidden="true">
-          <div class="hero-image-frame">
-            <img class="hero-product-image is-active" src="assets/bldc-motor.jpeg" alt="">
-            <img class="hero-product-image" src="assets/hollow-bldc-motor.jpeg" alt="">
-          </div>
+  <!-- ============ HEADER ============ -->
+  <header class="site-header" id="siteHeader">
+    <a class="brand" href="#top" aria-label="HYPERDYNE — Home">
+      <img src="assets/brand/hyperdyne_logo.png" alt="HYPERDYNE" />
+    </a>
+
+    <nav class="primary-nav" aria-label="Primary">
+      <a href="#hyperdyne"><span class="idx">01</span><span class="lbl">HYPERDYNE</span></a>
+      <a href="#technology"><span class="idx">02</span><span class="lbl">TECHNOLOGY</span></a>
+      <a href="#products"><span class="idx">03</span><span class="lbl">PRODUCTS</span></a>
+      <a href="#applications"><span class="idx">04</span><span class="lbl">APPLICATIONS</span></a>
+      <a href="#contact"><span class="idx">05</span><span class="lbl">CONTACT</span></a>
+    </nav>
+
+    <button class="nav-toggle" type="button" aria-label="메뉴 열기" aria-expanded="false">
+      <span></span><span></span>
+    </button>
+  </header>
+
+  <!-- ============ HERO ============ -->
+  <main id="top">
+    <section class="hero" aria-labelledby="hero-heading">
+      <!-- corner brackets -->
+      <span class="bracket tl" aria-hidden="true"></span>
+      <span class="bracket tr" aria-hidden="true"></span>
+      <span class="bracket bl" aria-hidden="true"></span>
+      <span class="bracket br" aria-hidden="true"></span>
+
+      <!-- rotating product image stack -->
+      <div class="orbit" aria-hidden="true">
+        <div class="orbit-ring r1"></div>
+        <div class="orbit-ring r2"></div>
+        <div class="orbit-halo"></div>
+        <div class="orbit-stage">
+          <img class="orbit-img is-active" src="assets/products/m01_long_motor1.png" alt="" />
+          <img class="orbit-img" src="assets/products/m06_bldc_hollow1.png" alt="" />
         </div>
+      </div>
 
-        <div class="hero-content">
-          <p class="eyebrow">Beyond Physical AI</p>
-          <h1 id="hero-title">Hyper Physical Intelligence</h1>
-          <p class="hero-lead">
-            탄성구동기 기반 하드웨어부터 제어·알고리즘, 시스템 응용, 평가 인프라까지.
-          </p>
-          <p class="hero-copy">
-            로봇, 중공업, 방산, 우주 스케일 작업까지 확장 가능한 고성능 구동 기술.
-          </p>
-          <div class="hero-actions" aria-label="HYPERDYNE quick actions">
-            <button class="primary-action" type="button" data-pending>Technology Vision</button>
-            <button class="secondary-action" type="button" data-pending>Core Portfolio</button>
-          </div>
+      <!-- left telemetry rail (removed per request) -->
+
+      <!-- main copy -->
+      <div class="hero-copy">
+        <p class="mono-tag">
+          <span class="dot"></span>BEYOND PHYSICAL AI
+        </p>
+
+        <h1 id="hero-heading" class="display">
+          HYPER<br />PHYSICAL<br /><em>INTELLIGENCE.</em>
+        </h1>
+
+        <p class="hero-lead">
+          탄성구동기 기반 하드웨어 원천기술부터<br />
+          제어·알고리즘, 시스템 응용, 평가 인프라까지.<br />
+          <span class="muted">로봇·중공업·방산·우주 스케일을 위한 차세대 구동 시스템.</span>
+        </p>
+
+        <div class="hero-cta">
+          <a class="btn primary" href="#technology">
+            <span>EXPLORE TECHNOLOGY</span>
+            <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="square"/></svg>
+          </a>
+          <a class="btn ghost" href="#contact">
+            <span>CONTACT MISSION</span>
+          </a>
         </div>
+      </div>
 
-        <aside class="hero-panel" aria-label="Technology portfolio">
-          <p>Core Technology</p>
-          <ul>
-            <li>탄성구동기 기반 하드웨어 원천기술</li>
-            <li>제어·알고리즘 원천기술</li>
-            <li>시스템 응용 기술</li>
-            <li>평가·벤치마킹 인프라</li>
+      <!-- bottom marquee -->
+      <div class="hero-marquee" aria-hidden="true">
+        <div class="marquee-inner">
+          <span>· ELASTIC ACTUATOR ARRAY</span>
+          <span>· HOLLOW BLDC MOTOR</span>
+          <span>· WOLFROM REDUCER</span>
+          <span>· LONG-AXIS DRIVE</span>
+          <span>· CONTROL ALGORITHM SUITE</span>
+          <span>· BENCHMARK INFRASTRUCTURE</span>
+          <span>· ELASTIC ACTUATOR ARRAY</span>
+          <span>· HOLLOW BLDC MOTOR</span>
+          <span>· WOLFROM REDUCER</span>
+          <span>· LONG-AXIS DRIVE</span>
+          <span>· CONTROL ALGORITHM SUITE</span>
+          <span>· BENCHMARK INFRASTRUCTURE</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ HYPERDYNE / MISSION ============ -->
+    <section class="block mission" id="hyperdyne">
+      <header class="block-head">
+        <span class="mono-tag"><span class="bullet"></span>01 — HYPERDYNE</span>
+        <h2 class="block-title mission-title">
+          지구를 초월하여,<br />
+          우주 환경에서도 작동하는<br />
+          <em>차세대 고출력 지능 작업.</em>
+        </h2>
+      </header>
+
+      <div class="mission-grid">
+        <p class="mission-lead">
+          HYPERDYNE은 <em>탄성구동기(Elastic Actuator)</em>를 비롯한
+          하이퍼 피지컬 인텔리전스 원천기술을 개발하는 기업입니다.
+          하드웨어·제어·시스템·평가, 네 가지 축을 수직 통합하여
+          기존 산업의 한계를 다시 정의합니다.
+        </p>
+        <ul class="mission-stats">
+          <li>
+            <span class="stat-n">04</span>
+            <span class="stat-k">CORE STACKS</span>
+          </li>
+          <li>
+            <span class="stat-n">11+</span>
+            <span class="stat-k">PRODUCT SKUS</span>
+          </li>
+          <li>
+            <span class="stat-n">∞</span>
+            <span class="stat-k">SCALE TARGET</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ TECHNOLOGY ============ -->
+    <section class="block technology" id="technology">
+      <header class="block-head">
+        <span class="mono-tag"><span class="bullet"></span>02 — TECHNOLOGY</span>
+        <h2 class="block-title">네 개의 기둥, 하나의 시스템.</h2>
+      </header>
+
+      <div class="tech-grid">
+        <article class="tech-card">
+          <span class="tc-id">T·01</span>
+          <h3>Actuation Source</h3>
+          <p class="tc-en">Elastic actuator hardware as the foundational power layer.</p>
+          <p class="tc-ko">탄성구동기 기반 하드웨어 원천기술. 충격을 흡수하고 에너지를 저장하여 더 강한 힘, 더 안전한 접촉.</p>
+          <ul class="tc-kw">
+            <li>BLDC MOTOR</li><li>HOLLOW SHAFT</li><li>SERIES ELASTIC</li>
           </ul>
-        </aside>
-      </section>
+        </article>
 
-      <section class="capability-strip" aria-label="Core capabilities">
-        <article>
-          <span>01</span>
-          <h2>Actuation Source</h2>
-          <p>탄성구동기 기반 하드웨어 원천기술</p>
+        <article class="tech-card">
+          <span class="tc-id">T·02</span>
+          <h3>Control Intelligence</h3>
+          <p class="tc-en">Real-time control & algorithms tuned to elastic dynamics.</p>
+          <p class="tc-ko">탄성 동역학에 최적화된 실시간 제어·알고리즘 원천기술. 모션 플래닝부터 임피던스 제어까지.</p>
+          <ul class="tc-kw">
+            <li>IMPEDANCE</li><li>FORCE CTRL</li><li>MOTION PLAN</li>
+          </ul>
         </article>
-        <article>
-          <span>02</span>
-          <h2>Control Intelligence</h2>
-          <p>제어·알고리즘 원천기술</p>
+
+        <article class="tech-card">
+          <span class="tc-id">T·03</span>
+          <h3>System Application</h3>
+          <p class="tc-en">Vertically integrated systems for real-world deployment.</p>
+          <p class="tc-ko">로봇 팔·다리·관절·휴머노이드까지 — 시스템 레벨 응용 기술과 통합 솔루션.</p>
+          <ul class="tc-kw">
+            <li>ROBOT JOINT</li><li>HUMANOID</li><li>HEAVY DUTY</li>
+          </ul>
         </article>
-        <article>
-          <span>03</span>
-          <h2>System Scale</h2>
-          <p>시스템 응용 기술과 평가·벤치마킹 인프라</p>
+
+        <article class="tech-card">
+          <span class="tc-id">T·04</span>
+          <h3>Benchmark Infra</h3>
+          <p class="tc-en">Test rigs & benchmarks that close the dev-to-deploy loop.</p>
+          <p class="tc-ko">평가·벤치마킹 인프라. 실험실에서 산업 현장까지, 신뢰성을 정량화합니다.</p>
+          <ul class="tc-kw">
+            <li>DYNO RIG</li><li>FATIGUE</li><li>FIELD TEST</li>
+          </ul>
         </article>
-      </section>
-    </main>
-  </div>
+      </div>
+    </section>
+
+    <!-- ============ PRODUCTS ============ -->
+    <section class="block products" id="products">
+      <header class="block-head">
+        <span class="mono-tag"><span class="bullet"></span>03 — PRODUCTS</span>
+        <h2 class="block-title">코어 포트폴리오.</h2>
+      </header>
+
+      <div class="product-grid">
+        <article class="product-card">
+          <div class="pc-media"><img src="assets/products/m05_bldc_rotor1.png" alt="모터" /></div>
+          <div class="pc-meta">
+            <span class="pc-id">P·01</span>
+            <h3>Motor</h3>
+            <p>고출력·고효율 BLDC 모터 라인업. 표준·중공형·롱타입.</p>
+          </div>
+        </article>
+        <article class="product-card">
+          <div class="pc-media"><img src="assets/products/m10_wolform_reducer.png" alt="감속기" /></div>
+          <div class="pc-meta">
+            <span class="pc-id">P·02</span>
+            <h3>Reducer</h3>
+            <p>고감속비·고강성 Wolfrom 유성 감속기. 백래시 최소화.</p>
+          </div>
+        </article>
+        <article class="product-card">
+          <div class="pc-media"><img src="assets/products/m08_elastic_single.png" alt="탄성체" /></div>
+          <div class="pc-meta">
+            <span class="pc-id">P·03</span>
+            <h3>Elastic Element</h3>
+            <p>충격 흡수·에너지 저장 탄성체. 직동/회전 라인업 보유.</p>
+          </div>
+        </article>
+        <article class="product-card">
+          <div class="pc-media"><img src="assets/products/m12_motor_driver.jpg" alt="인버터 / 모터 드라이버" /></div>
+          <div class="pc-meta">
+            <span class="pc-id">P·04</span>
+            <h3>Inverter</h3>
+            <p>모터 제어·구동 전용 인버터. 고효율·고신뢰 설계.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ APPLICATIONS ============ -->
+    <section class="block applications" id="applications">
+      <header class="block-head">
+        <span class="mono-tag"><span class="bullet"></span>04 — APPLICATIONS</span>
+        <h2 class="block-title">
+          <em>HYPER PHYSICAL REALIZATION.</em><br />
+          로봇부터 중공업·방산 산업을 넘어<br />
+          우주 스케일 중장비까지.
+        </h2>
+      </header>
+
+      <ul class="app-list">
+        <li>
+          <span class="app-id">A·01</span>
+          <div>
+            <h3>Robotics</h3>
+            <p>휴머노이드·협동로봇·이족보행 — 부드럽고 강한 관절을 위해.</p>
+          </div>
+          <span class="app-arrow">→</span>
+        </li>
+        <li>
+          <span class="app-id">A·02</span>
+          <div>
+            <h3>Heavy Industry</h3>
+            <p>건설·산업 기계 — 고하중·고출력 환경의 차세대 구동.</p>
+          </div>
+          <span class="app-arrow">→</span>
+        </li>
+        <li>
+          <span class="app-id">A·03</span>
+          <div>
+            <h3>Defense</h3>
+            <p>고신뢰·고기동 — 극한 환경을 위한 구동 시스템.</p>
+          </div>
+          <span class="app-arrow">→</span>
+        </li>
+        <li>
+          <span class="app-id">A·04</span>
+          <div>
+            <h3>Space</h3>
+            <p>저중력·고진공·극저온 — 우주 스케일 임무를 위한 구동 모듈.</p>
+          </div>
+          <span class="app-arrow">→</span>
+        </li>
+      </ul>
+    </section>
+
+    <!-- ============ CONTACT ============ -->
+    <section class="block contact" id="contact">
+      <header class="block-head">
+        <span class="mono-tag"><span class="bullet"></span>05 — CONTACT</span>
+        <h2 class="block-title">기술 협력 · 사업 문의.</h2>
+      </header>
+
+      <div class="contact-grid">
+        <div class="contact-copy">
+          <p>
+            기술 제휴, 파트너십, 채용, 일반 문의를 환영합니다.<br />
+            HYPERDYNE은 차세대 고출력 지능 작업에 앞장서고 있습니다.
+          </p>
+          <a class="btn primary" href="mailto:ceo@hyperdyne.co.kr">
+            <span>CEO@HYPERDYNE.CO.KR</span>
+            <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="square"/></svg>
+          </a>
+        </div>
+        <dl class="contact-info">
+          <div><dt>EMAIL</dt><dd>ceo@hyperdyne.co.kr</dd></div>
+          <div><dt>HQ</dt><dd>Republic of Korea</dd></div>
+          <div><dt>WEB</dt><dd>hyperdyne.co.kr</dd></div>
+        </dl>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="site-footer">
+    <div class="ft-row">
+      <span class="ft-brand">HYPERDYNE</span>
+      <span class="ft-tag">© 2026 HYPERDYNE · ALL RIGHTS RESERVED</span>
+      <span class="ft-meta">BEYOND PHYSICAL AI</span>
+    </div>
+  </footer>
 
   <script src="script.js"></script>
 </body>

@@ -1,69 +1,64 @@
-# HYPERDYNE GitHub Pages 정적 웹사이트 초안
+# HYPERDYNE 웹사이트 — 깃허브 업로드 가이드
 
-## 1. 프로젝트 목적
+## 무엇을 깃허브에 올려야 하나요?
 
-본 프로젝트는 HYPERDYNE 소개를 위한 GitHub Pages용 정적 웹사이트 초안입니다.
+아래 **6개 항목만** 저장소(레포)의 루트에 업로드하시면 됩니다.
+`preview.html`, `UPLOAD_GUIDE.md`, `Mainpage_Middle_imagelist.txt` 는 작업 확인용이라 올리지 않아도 사이트는 정상 동작합니다 (올려도 무방).
 
-React, Next.js, Vite, 백엔드 서버를 사용하지 않고 `HTML`, `CSS`, `JavaScript`만으로 구성하여 GitHub Pages에 바로 배포할 수 있도록 제작했습니다.
-
-디자인 방향은 SpaceX 메인페이지처럼 어두운 배경, 강한 히어로 섹션, 제품 이미지 중심의 기술기업 랜딩페이지 스타일을 참고했습니다. 현재 단계에서는 회사 소개보다는 HYPERDYNE의 기술 비전과 핵심 포트폴리오를 간결하게 보여주는 것을 목표로 했습니다.
-
-## 2. 파일 구조 설명
-
-```text
-hyperdyne-website/
-├── index.html
-├── style.css
-├── script.js
-├── README.md
+```
+hyperdyne.co.kr/  ← 깃허브 저장소 루트
+├── index.html              ← 메인 페이지
+├── style.css               ← 디자인 / 반응형
+├── script.js               ← 이미지 회전 · 별 · 시계
+├── CNAME                   ← (이미 도메인 작업되어 있다면 그대로 두기)
 └── assets/
-    ├── bldc-motor.jpeg
-    ├── hollow-bldc-motor.jpeg
-    ├── long-rotor.jpg
-    ├── wolfrom-reducer.png
-    └── motor-winding.png
+    ├── brand/
+    │   ├── hyperdyne_logo.png         ← 300dpi 풀로고
+    │   └── hyperdyne_logo_small.png   ← 100dpi (favicon용)
+    └── products/
+        ├── m01_long_motor1.png
+        ├── m02_long_motor2.png
+        ├── m03_rotor_long.png
+        ├── m04_rotor_long1.png
+        ├── m05_bldc_rotor1.png
+        ├── m06_bldc_hollow1.png
+        ├── m07_bldc_hollow2.png
+        ├── m08_elastic_single.png
+        ├── m09_elastic2.png
+        ├── m10_wolform_reducer.png
+        └── m11_wolform_reducer2.png
 ```
 
-- `index.html`: 웹사이트의 전체 구조를 담당합니다. 상단 메뉴, 메인 히어로 영역, 기술 포트폴리오 섹션 등이 포함되어 있습니다.
-- `style.css`: 웹사이트의 디자인, 레이아웃, 반응형 처리, 제품 이미지 fade 애니메이션을 담당합니다.
-- `script.js`: 제품 이미지 자동 전환 로직과 상단 메뉴 클릭 시 안내 메시지를 표시하는 이벤트를 담당합니다.
-- `assets/`: 웹사이트에 사용되는 제품 이미지 파일을 보관하는 폴더입니다.
+## 업로드 안 해도 되는 파일 (작업·검토용)
 
-## 3. 실행 방법
+- `mobile.html` — 모바일 프레임 안에 사이트 렌더링 (확인용).
+- `UPLOAD_GUIDE.md` — 이 가이드 파일.
+- `Mainpage_Middle_imagelist.txt` — 이미지 회전 리스트 메모.
+- `uploads/` — 원본 자료 폴더.
 
-별도의 설치 과정 없이 바로 확인할 수 있습니다.
+## CNAME 파일
 
-1. 프로젝트 폴더를 엽니다.
-2. `index.html` 파일을 브라우저에서 직접 실행합니다.
+`hyperdyne.co.kr` 도메인이 이미 연결되어 있다면, 기존 저장소의 `CNAME` 파일을 그대로 유지하세요. 신규 저장소라면 한 줄짜리 파일을 만들어 주세요:
 
-또는 VS Code를 사용하는 경우 `Live Server` 확장 기능으로 실행할 수 있습니다.
+```
+hyperdyne.co.kr
+```
 
-1. VS Code에서 프로젝트 폴더를 엽니다.
-2. `index.html` 파일을 선택합니다.
-3. 마우스 오른쪽 버튼을 누른 뒤 `Open with Live Server`를 선택합니다.
+## 깃허브 페이지 활성화
 
-## 4. GitHub Pages 배포 방법
+1. 저장소 → **Settings** → **Pages**
+2. Source: **Deploy from a branch** → Branch: **main** / Folder: **/(root)**
+3. 저장 → 1~2분 뒤 배포 완료
 
-1. GitHub에서 새 저장소를 생성합니다.
-2. 현재 프로젝트의 `index.html`, `style.css`, `script.js`, `README.md`, `assets/` 폴더를 저장소에 업로드합니다.
-3. 저장소의 `Settings` 메뉴로 이동합니다.
-4. 왼쪽 메뉴에서 `Pages` 항목을 선택합니다.
-5. 배포 방식은 `Deploy from a branch`를 선택합니다.
-6. Branch는 `main`, Folder는 `/(root)`를 선택한 뒤 저장합니다.
-7. 잠시 후 GitHub Pages에서 제공하는 주소로 웹사이트를 확인할 수 있습니다.
+## 이미지 회전 / 순서 변경
 
-## 5. 현재 구현된 기능
+`script.js` 상단의 `PRODUCT_IMAGES` 배열에서 순서 / 표기 ID / 표기 이름을 자유롭게 바꾸시면 됩니다. 회전 주기는 `setInterval(rotateHero, 2500)` 의 `2500`(ms)을 수정.
 
-- HYPERDYNE 기술 비전을 강조하는 메인 히어로 화면
-- 제품 이미지가 부드럽게 전환되는 fade-in / fade-out 효과
-- 상단 네비게이션 메뉴 구성
-- 메뉴 클릭 시 `페이지 준비 중입니다.` 안내 메시지 표시
-- 데스크톱과 모바일 화면에 대응하는 반응형 레이아웃
+## 향후 페이지 확장
 
-## 6. 추후 확장 가능 기능
+`technology.html`, `products.html` 같은 식으로 별도 페이지를 만드시고 메뉴 링크의 `href="#..."` 를 해당 파일 경로로 바꾸면 됩니다. 추가 페이지 작업 시 고해상도 이미지가 필요하면 알려주세요. 페이지 안에는 다음과 같이 placeholder를 적어두겠습니다:
 
-- `Technology` 상세 페이지 추가
-- `Products` 상세 페이지 추가
-- `Applications` 상세 페이지 추가
-- `Contact` 페이지 추가
-- GitHub Pages 커스텀 도메인 연결
+```html
+<!-- 📷 PLACEHOLDER — 기술소개서 p.12 (우하단 페이지번호 기준)
+     "BLDC 모터 절단도" 이미지 필요 -->
+```

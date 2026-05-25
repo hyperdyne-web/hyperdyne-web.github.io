@@ -1,80 +1,179 @@
-const productImages = [
-  "assets/bldc-motor.jpeg",
-  "assets/hollow-bldc-motor.jpeg",
-  "assets/long-rotor.jpg",
-  "assets/wolfrom-reducer.png",
-  "assets/motor-winding.png"
+/* =============================================================
+   HYPERDYNE — script.js
+   ============================================================= */
+
+/* -------------------------------------------------------------
+   Hero rotating product image — 2.5s interval, soft crossfade,
+   edges masked invisible via CSS radial mask.
+   ------------------------------------------------------------- */
+const PRODUCT_IMAGES = [
+  "assets/products/m01_long_motor1.png",
+  "assets/products/m06_bldc_hollow1.png",
+  "assets/products/m10_wolform_reducer.png",
+  "assets/products/m02_long_motor2.png",
+  "assets/products/m07_bldc_hollow2.png",
+  "assets/products/m08_elastic_single.png",
+  "assets/products/m11_wolform_reducer2.png",
+  "assets/products/m09_elastic2.png",
+  "assets/products/m04_rotor_long1.png",
 ];
 
-const imageElements = Array.from(document.querySelectorAll(".hero-product-image"));
-const pendingLinks = document.querySelectorAll("[data-pending]");
-const navToggle = document.querySelector(".nav-toggle");
-const mainNav = document.querySelector(".main-nav");
+const orbitImages = Array.from(document.querySelectorAll(".orbit-img"));
 
-let currentImageIndex = 0;
-let visibleLayer = 0;
-let isTransitioning = false;
-
-productImages.forEach((src) => {
-  const image = new Image();
-  image.src = src;
+// Preload every image so transitions are instant.
+PRODUCT_IMAGES.forEach((src) => {
+  const im = new Image();
+  im.src = src;
 });
 
-function showPendingMessage(event) {
-  event.preventDefault();
-  alert("페이지 준비 중입니다.");
+let visibleLayer = 0;          // index in orbitImages currently shown
+let activeIndex = 0;            // index in PRODUCT_IMAGES currently shown
+let isTransitioning = false;
 
-  if (mainNav.classList.contains("is-open")) {
-    closeMobileNav();
-  }
+async function preload(el, src) {
+  el.src = src;
+  if (el.decode) { try { await el.decode(); } catch (_) {} }
 }
 
-function closeMobileNav() {
-  navToggle.classList.remove("is-open");
-  mainNav.classList.remove("is-open");
-  navToggle.setAttribute("aria-expanded", "false");
-}
-
-function toggleMobileNav() {
-  const isOpen = navToggle.classList.toggle("is-open");
-  mainNav.classList.toggle("is-open", isOpen);
-  navToggle.setAttribute("aria-expanded", String(isOpen));
-}
-
-async function prepareImage(element, src) {
-  element.src = src;
-
-  if (element.decode) {
-    await element.decode().catch(() => {});
-  }
-}
-
-async function rotateHeroImage() {
-  if (isTransitioning || imageElements.length < 2) {
-    return;
-  }
-
+async function rotateHero() {
+  if (isTransitioning || orbitImages.length < 2) return;
   isTransitioning = true;
-  currentImageIndex = (currentImageIndex + 1) % productImages.length;
-  visibleLayer = visibleLayer === 0 ? 1 : 0;
 
-  const activeImage = imageElements[visibleLayer];
-  const inactiveImage = imageElements[visibleLayer === 0 ? 1 : 0];
+  const nextIndex = (activeIndex + 1) % PRODUCT_IMAGES.length;
+  const nextLayer = visibleLayer === 0 ? 1 : 0;
 
-  await prepareImage(activeImage, productImages[currentImageIndex]);
+  const incoming = orbitImages[nextLayer];
+  const outgoing = orbitImages[visibleLayer];
 
-  window.requestAnimationFrame(() => {
-    activeImage.classList.add("is-active");
-    inactiveImage.classList.remove("is-active");
-    isTransitioning = false;
+  await preload(incoming, PRODUCT_IMAGES[nextIndex]);
+
+  requestAnimationFrame(() => {
+    incoming.classList.add("is-active");
+    outgoing.classList.remove("is-active");
+    visibleLayer = nextLayer;
+    activeIndex = nextIndex;
+    setTimeout(() => { isTransitioning = false; }, 1500);
   });
 }
 
-pendingLinks.forEach((item) => {
-  item.addEventListener("click", showPendingMessage);
-});
+// 2.5s interval as requested
+setInterval(rotateHero, 2500);
 
-navToggle.addEventListener("click", toggleMobileNav);
+/* -------------------------------------------------------------
+   Starfield canvas — subtle parallax twinkle
+   ------------------------------------------------------------- */
+(function starfield() {
+  const canvas = document.getElementById("stars");
+  if (!canvas) return;
+  const ctx = canvas.getContext("2d");
+  let stars = [];
+  let w = 0, h = 0;
+  let raf = 0;
 
-// Two image layers cross-fade while the next product image loads into the hidden layer.
-window.setInterval(rotateHeroImage, 4600);
+  function resize() {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    w = canvas.width  = Math.floor(window.innerWidth  * dpr);
+    h = canvas.height = Math.floor(window.innerHeight * dpr);
+    canvas.style.width  = window.innerWidth + "px";
+    canvas.style.height = window.innerHeight + "px";
+    // density scaled to area
+    const count = Math.floor((window.innerWidth * window.innerHeight) / 5200);
+    stars = new Array(count).fill(0).map(() => makeStar(dpr));
+  }
+
+  function makeStar(dpr) {
+    return {
+      x: Math.random() * w,
+      y: Math.random() * h,
+      r: (Math.random() * 0.9 + 0.15) * dpr,
+      a: Math.random() * 0.6 + 0.2,
+      speed: (Math.random() * 0.18 + 0.05) * dpr,
+      twinkle: Math.random() * Math.PI * 2,
+      twinkleSpeed: 0.008 + Math.random() * 0.018,
+      tint: Math.random() > 0.85 ? "rgba(170,210,255," : "rgba(255,255,255,"
+    };
+  }
+
+  function tick() {
+    ctx.clearRect(0, 0, w, h);
+    for (let s of stars) {
+      s.twinkle += s.twinkleSpeed;
+      const alpha = s.a * (0.55 + 0.45 * Math.sin(s.twinkle));
+      ctx.fillStyle = s.tint + alpha.toFixed(3) + ")";
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fill();
+      // slow drift
+      s.y += s.speed;
+      if (s.y > h + 4) {
+        s.y = -4;
+        s.x = Math.random() * w;
+      }
+    }
+    raf = requestAnimationFrame(tick);
+  }
+
+  resize();
+  tick();
+
+  let resizeT;
+  window.addEventListener("resize", () => {
+    clearTimeout(resizeT);
+    resizeT = setTimeout(() => { cancelAnimationFrame(raf); resize(); tick(); }, 150);
+  });
+
+  // pause when offscreen / tab hidden
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) cancelAnimationFrame(raf);
+    else tick();
+  });
+})();
+
+/* -------------------------------------------------------------
+   UTC live clock (header + footer)
+   ------------------------------------------------------------- */
+function tickClocks() {
+  const now = new Date();
+  const hh = String(now.getUTCHours()).padStart(2, "0");
+  const mm = String(now.getUTCMinutes()).padStart(2, "0");
+  const ss = String(now.getUTCSeconds()).padStart(2, "0");
+  const t = `${hh}:${mm}:${ss}`;
+  const utc = document.getElementById("utcClock");
+  const ft  = document.getElementById("ftClock");
+  if (utc) utc.textContent = t;
+  if (ft)  ft.textContent  = `UTC ${t}`;
+}
+setInterval(tickClocks, 1000);
+tickClocks();
+
+/* -------------------------------------------------------------
+   Header scroll shadow
+   ------------------------------------------------------------- */
+const header = document.getElementById("siteHeader");
+function onScroll() {
+  if (!header) return;
+  if (window.scrollY > 24) header.classList.add("is-scrolled");
+  else                     header.classList.remove("is-scrolled");
+}
+window.addEventListener("scroll", onScroll, { passive: true });
+onScroll();
+
+/* -------------------------------------------------------------
+   Mobile nav toggle
+   ------------------------------------------------------------- */
+const navToggle = document.querySelector(".nav-toggle");
+const navMenu   = document.querySelector(".primary-nav");
+if (navToggle && navMenu) {
+  navToggle.addEventListener("click", () => {
+    const open = navToggle.classList.toggle("is-open");
+    navMenu.classList.toggle("is-open", open);
+    navToggle.setAttribute("aria-expanded", String(open));
+  });
+  navMenu.querySelectorAll("a").forEach((a) => {
+    a.addEventListener("click", () => {
+      navToggle.classList.remove("is-open");
+      navMenu.classList.remove("is-open");
+      navToggle.setAttribute("aria-expanded", "false");
+    });
+  });
+}
