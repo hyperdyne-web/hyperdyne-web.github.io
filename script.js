@@ -9,11 +9,12 @@
 const PRODUCT_IMAGES = [
   "assets/products/m01_long_motor1.png",
   "assets/products/m06_bldc_hollow1.png",
-  "assets/products/m10_wolform_reducer.png",
+  "assets/products/QRHD.png",
   "assets/products/m02_long_motor2.png",
   "assets/products/m07_bldc_hollow2.png",
   "assets/products/m08_elastic_single.png",
   "assets/products/m11_wolform_reducer2.png",
+  "assets/products/RHD.png",
   "assets/products/m09_elastic2.png",
   "assets/products/m04_rotor_long1.png",
 ];
@@ -130,21 +131,50 @@ setInterval(rotateHero, 2500);
 })();
 
 /* -------------------------------------------------------------
-   UTC live clock (header + footer)
+   Hero marquee — 13 technology items from the catalog index
    ------------------------------------------------------------- */
-function tickClocks() {
-  const now = new Date();
-  const hh = String(now.getUTCHours()).padStart(2, "0");
-  const mm = String(now.getUTCMinutes()).padStart(2, "0");
-  const ss = String(now.getUTCSeconds()).padStart(2, "0");
-  const t = `${hh}:${mm}:${ss}`;
-  const utc = document.getElementById("utcClock");
-  const ft  = document.getElementById("ftClock");
-  if (utc) utc.textContent = t;
-  if (ft)  ft.textContent  = `UTC ${t}`;
-}
-setInterval(tickClocks, 1000);
-tickClocks();
+(function buildMarquee() {
+  const inner = document.getElementById("marqueeInner");
+  if (!inner) return;
+  const items = [
+    "QRHD · QUASI ROTARY HYPER DRIVE",
+    "QLHD · QUASI LINEAR HYPER DRIVE",
+    "RHD · ROTARY HYPER DRIVE",
+    "LHD · LINEAR HYPER DRIVE",
+    "FOUR-WHEEL INDEPENDENT ACTIVE SUSPENSION",
+    "ACTIVE ROLL STABILIZER (ARS)",
+    "NEXT-GEN LINEAR ACTIVE STRUT",
+    "EXCAVATOR ROBOT PLATFORM",
+    "FIVE-BAR LINKAGE 2-DOF HOPPING PLATFORM",
+    "DYNAMOMETER TEST INFRASTRUCTURE",
+    "FOUR-STAGE EVALUATION PROTOCOL",
+    "QUARTER / HALF-CAR HILS TESTER",
+    "ROBOTIC HILS PLATFORM",
+  ];
+  // duplicate the list so the -50% translate loop is seamless
+  const html = items.map((t) => `<span>· ${t}</span>`).join("");
+  inner.innerHTML = html + html;
+})();
+
+/* -------------------------------------------------------------
+   Language toggle — default English, persisted in localStorage
+   ------------------------------------------------------------- */
+(function langToggle() {
+  const KEY = "hd-lang";
+  const buttons = Array.from(document.querySelectorAll("[data-set-lang]"));
+  function apply(lang) {
+    const l = lang === "ko" ? "ko" : "en";
+    document.body.classList.toggle("lang-en", l === "en");
+    document.body.classList.toggle("lang-ko", l === "ko");
+    document.documentElement.lang = l;
+    buttons.forEach((b) => b.classList.toggle("is-active", b.dataset.setLang === l));
+    try { localStorage.setItem(KEY, l); } catch (_) {}
+  }
+  buttons.forEach((b) => b.addEventListener("click", () => apply(b.dataset.setLang)));
+  let saved = "en";
+  try { saved = localStorage.getItem(KEY) || "en"; } catch (_) {}
+  apply(saved);
+})();
 
 /* -------------------------------------------------------------
    Header scroll shadow

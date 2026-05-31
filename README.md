@@ -1,64 +1,55 @@
 # HYPERDYNE 웹사이트 — 깃허브 업로드 가이드
 
-## 무엇을 깃허브에 올려야 하나요?
+## ⚠️ 반드시 함께 올려야 할 카탈로그 PDF 2개
 
-아래 **6개 항목만** 저장소(레포)의 루트에 업로드하시면 됩니다.
-`preview.html`, `UPLOAD_GUIDE.md`, `Mainpage_Middle_imagelist.txt` 는 작업 확인용이라 올리지 않아도 사이트는 정상 동작합니다 (올려도 무방).
+이번 버전에는 카탈로그 다운로드 버튼(히어로 + Contact)이 추가됐습니다.
+아래 **두 PDF 파일을 깃허브 저장소 루트에 정확히 이 이름으로** 올려야 다운로드가 작동합니다:
 
 ```
-hyperdyne.co.kr/  ← 깃허브 저장소 루트
-├── index.html              ← 메인 페이지
-├── style.css               ← 디자인 / 반응형
-├── script.js               ← 이미지 회전 · 별 · 시계
-├── CNAME                   ← (이미 도메인 작업되어 있다면 그대로 두기)
+Catalog_ENG_v4.pdf     ← 영문 카탈로그
+Catalog_Kor_v4.pdf     ← 한글 카탈로그
+```
+
+(아직 안 올리면 다운로드 버튼이 404가 납니다. 파일명 대소문자까지 정확히 맞춰주세요.)
+
+## 깃허브에 올릴 파일
+
+```
+저장소 루트/
+├── index.html
+├── style.css
+├── script.js
+├── CNAME
+├── Catalog_ENG_v4.pdf      ← 직접 추가 (영문)
+├── Catalog_Kor_v4.pdf      ← 직접 추가 (한글)
 └── assets/
     ├── brand/
-    │   ├── hyperdyne_logo.png         ← 300dpi 풀로고
-    │   └── hyperdyne_logo_small.png   ← 100dpi (favicon용)
+    │   ├── hyperdyne_logo.png
+    │   └── hyperdyne_logo_small.png
     └── products/
-        ├── m01_long_motor1.png
-        ├── m02_long_motor2.png
-        ├── m03_rotor_long.png
-        ├── m04_rotor_long1.png
-        ├── m05_bldc_rotor1.png
-        ├── m06_bldc_hollow1.png
-        ├── m07_bldc_hollow2.png
-        ├── m08_elastic_single.png
-        ├── m09_elastic2.png
-        ├── m10_wolform_reducer.png
-        └── m11_wolform_reducer2.png
+        ├── QRHD.png  QLHD.png  RHD.png  LHD.png   ← 제품 4종
+        └── m01~m12 ...                            ← 히어로 회전용
 ```
 
-## 업로드 안 해도 되는 파일 (작업·검토용)
+## 업로드 방법 (덮어쓰기)
 
-- `mobile.html` — 모바일 프레임 안에 사이트 렌더링 (확인용).
-- `UPLOAD_GUIDE.md` — 이 가이드 파일.
-- `Mainpage_Middle_imagelist.txt` — 이미지 회전 리스트 메모.
-- `uploads/` — 원본 자료 폴더.
+1. `hyperdyne-web/hyperdyne-web.github.io` 저장소 → **Add file → Upload files**
+2. 받은 `deploy` 폴더 내용물 전부 + 카탈로그 PDF 2개 드래그
+3. 같은 이름은 자동 덮어쓰기됨 → 아래로 스크롤 → **Commit changes**
+4. 1~2분 뒤 hyperdyne.co.kr 반영 → 강력 새로고침(Cmd/Ctrl+Shift+R)으로 확인
 
-## CNAME 파일
+## 안 올려도 되는 파일 (작업·확인용)
 
-`hyperdyne.co.kr` 도메인이 이미 연결되어 있다면, 기존 저장소의 `CNAME` 파일을 그대로 유지하세요. 신규 저장소라면 한 줄짜리 파일을 만들어 주세요:
+- `mobile.html` — 모바일 프레임 미리보기
+- `*.md`, `Mainpage_Middle_imagelist.txt`, `uploads/`, `deploy/README.md`
 
-```
-hyperdyne.co.kr
-```
+## 언어 전환 (ENG / KOR)
 
-## 깃허브 페이지 활성화
+- 우상단 `EN / KOR` 버튼으로 전체 페이지가 영↔한 전환됩니다.
+- **기본값은 영어(EN)**, 방문자 선택은 브라우저에 저장됩니다.
+- 텍스트는 `index.html` 안에서 `<span data-lang="en">` / `<span data-lang="ko">` 쌍으로 관리됩니다. 문구 수정 시 두 언어를 함께 고쳐주세요.
 
-1. 저장소 → **Settings** → **Pages**
-2. Source: **Deploy from a branch** → Branch: **main** / Folder: **/(root)**
-3. 저장 → 1~2분 뒤 배포 완료
+## 메인 이미지 회전 / 카탈로그 항목
 
-## 이미지 회전 / 순서 변경
-
-`script.js` 상단의 `PRODUCT_IMAGES` 배열에서 순서 / 표기 ID / 표기 이름을 자유롭게 바꾸시면 됩니다. 회전 주기는 `setInterval(rotateHero, 2500)` 의 `2500`(ms)을 수정.
-
-## 향후 페이지 확장
-
-`technology.html`, `products.html` 같은 식으로 별도 페이지를 만드시고 메뉴 링크의 `href="#..."` 를 해당 파일 경로로 바꾸면 됩니다. 추가 페이지 작업 시 고해상도 이미지가 필요하면 알려주세요. 페이지 안에는 다음과 같이 placeholder를 적어두겠습니다:
-
-```html
-<!-- 📷 PLACEHOLDER — 기술소개서 p.12 (우하단 페이지번호 기준)
-     "BLDC 모터 절단도" 이미지 필요 -->
-```
+- 회전 순서·주기: `script.js` 의 `PRODUCT_IMAGES`, `setInterval(rotateHero, 2500)`
+- 히어로 하단 흐르는 띠(13개 항목): `script.js` 의 `buildMarquee()` 안 `items` 배열
