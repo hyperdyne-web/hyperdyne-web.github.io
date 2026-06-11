@@ -177,6 +177,21 @@ setInterval(rotateHero, 2500);
 })();
 
 /* -------------------------------------------------------------
+   CEO email — assembled in JS so Cloudflare's email-obfuscation
+   scanner never sees a literal address (no "[email protected]")
+   ------------------------------------------------------------- */
+(function ceoEmail() {
+  const a = document.getElementById("ceoMail");
+  if (!a) return;
+  const user = a.dataset.user || "ceo";
+  const domain = a.dataset.domain || "hyperdyne.co.kr";
+  const addr = user + "@" + domain;
+  a.href = "mailto:" + addr;
+  const label = a.querySelector(".ceo-mail-text");
+  if (label) label.textContent = addr.toUpperCase();
+})();
+
+/* -------------------------------------------------------------
    Header scroll shadow
    ------------------------------------------------------------- */
 const header = document.getElementById("siteHeader");
