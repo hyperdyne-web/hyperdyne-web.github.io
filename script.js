@@ -177,6 +177,40 @@ setInterval(rotateHero, 2500);
 })();
 
 /* -------------------------------------------------------------
+   Partner logo marquee — right-to-left, seamless loop
+   ------------------------------------------------------------- */
+(function buildLogoMarquee() {
+  const track = document.getElementById("logoTrack");
+  if (!track) return;
+  const logos = [
+    ["assets/partners/hmg.png",      "Hyundai Motor Group"],
+    ["assets/partners/hmc.png",      "Hyundai Motor Company"],
+    ["assets/partners/hwia.png",     "Hyundai WIA"],
+    ["assets/partners/mss.png",      "중소벤처기업부 · Ministry of SMEs and Startups"],
+    ["assets/partners/kstartup.png", "K-Startup"],
+    ["assets/partners/motie.png",    "산업통상부 · Ministry of Trade, Industry and Resources"],
+    ["assets/partners/kiria.png",    "한국로봇산업진흥원 · KIRIA"],
+    ["assets/partners/repa.png",     "대경로봇기업진흥협회 · REPA"],
+    ["assets/partners/yu.png",       "영남대학교 · Yeungnam University"],
+  ];
+  const makeItem = ([src, name]) => {
+    const card = document.createElement("div");
+    card.className = "logo-card";
+    if (src.includes("repa")) card.classList.add("lg-repa");
+    const img = document.createElement("img");
+    img.src = src;
+    img.alt = name;
+    img.loading = "lazy";
+    card.appendChild(img);
+    return card;
+  };
+  // two passes for a seamless -50% loop
+  const frag = document.createDocumentFragment();
+  logos.concat(logos).forEach((l) => frag.appendChild(makeItem(l)));
+  track.appendChild(frag);
+})();
+
+/* -------------------------------------------------------------
    CEO email — assembled in JS so Cloudflare's email-obfuscation
    scanner never sees a literal address (no "[email protected]")
    ------------------------------------------------------------- */
