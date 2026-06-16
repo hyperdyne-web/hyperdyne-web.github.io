@@ -182,32 +182,87 @@ setInterval(rotateHero, 2500);
 (function buildLogoMarquee() {
   const track = document.getElementById("logoTrack");
   if (!track) return;
+  // common = same logo for both languages; en/ko = language-specific variants
   const logos = [
-    ["assets/partners/hmg.png",      "Hyundai Motor Group"],
-    ["assets/partners/hmc.png",      "Hyundai Motor Company"],
-    ["assets/partners/hwia.png",     "Hyundai WIA"],
-    ["assets/partners/mss.png",      "중소벤처기업부 · Ministry of SMEs and Startups"],
-    ["assets/partners/kstartup.png", "K-Startup"],
-    ["assets/partners/motie.png",    "산업통상부 · Ministry of Trade, Industry and Resources"],
-    ["assets/partners/kiria.png",    "한국로봇산업진흥원 · KIRIA"],
-    ["assets/partners/repa.png",     "대경로봇기업진흥협회 · REPA"],
-    ["assets/partners/yu.png",       "영남대학교 · Yeungnam University"],
+    { common: "assets/partners/hmg.png",  name: "Hyundai Motor Group" },
+    { common: "assets/partners/hmc.png",  name: "Hyundai Motor Company" },
+    { common: "assets/partners/hwia.png", name: "Hyundai WIA" },
+    { en: "assets/partners/snt_en.png",   ko: "assets/partners/snt_ko.png",   name: "SNT Motiv" },
+    { en: "assets/partners/mss_en.png",   ko: "assets/partners/mss_ko.png",   name: "Ministry of SMEs and Startups", cls: "lg-tall" },
+    { en: "assets/partners/motie_en.png", ko: "assets/partners/motie_ko.png", name: "Ministry of Trade, Industry and Resources", cls: "lg-tall" },
+    { common: "assets/partners/kstartup.png", name: "K-Startup" },
+    { en: "assets/partners/kiria_en.png", ko: "assets/partners/kiria_ko.png", name: "KIRIA", cls: "lg-kiria" },
+    { en: "assets/partners/repa_en.png",  ko: "assets/partners/repa_ko.png",  name: "REPA", cls: "lg-wide" },
+    { en: "assets/partners/yu_en.png",    ko: "assets/partners/yu_ko.png",    name: "Yeungnam University" },
   ];
-  const makeItem = ([src, name]) => {
+  const makeItem = (entry) => {
     const card = document.createElement("div");
-    card.className = "logo-card";
-    if (src.includes("repa")) card.classList.add("lg-repa");
-    const img = document.createElement("img");
-    img.src = src;
-    img.alt = name;
-    img.loading = "lazy";
-    card.appendChild(img);
+    card.className = "logo-card" + (entry.cls ? " " + entry.cls : "");
+    if (entry.common) {
+      const img = document.createElement("img");
+      img.src = entry.common; img.alt = entry.name; img.loading = "lazy";
+      card.appendChild(img);
+    } else {
+      ["en", "ko"].forEach((lng) => {
+        const img = document.createElement("img");
+        img.src = entry[lng]; img.alt = entry.name; img.loading = "lazy";
+        img.setAttribute("data-lang", lng);
+        card.appendChild(img);
+      });
+    }
     return card;
   };
-  // two passes for a seamless -50% loop
   const frag = document.createDocumentFragment();
   logos.concat(logos).forEach((l) => frag.appendChild(makeItem(l)));
   track.appendChild(frag);
+
+  /* JS-driven scroll so arrows can nudge it; auto-drifts right→left, seamless loop */
+  const marquee = track.closest(".logo-marquee");
+  const prevBtn = marquee && marquee.querySelector(".lm-prev");
+  const nextBtn = marquee && marquee.querySelector(".lm-next");
+
+  let half = 0;                 // width of one logo set (track holds two)
+  let offset = 0;               // current translateX (<= 0)
+  let paused = false;
+  const SPEED = 0.42;           // px per frame auto-drift
+  let nudge = 0;                // remaining px to add from arrow clicks
+  let last = performance.now();
+
+  function measure() { half = track.scrollWidth / 2; }
+  measure();
+  window.addEventListener("resize", () => { measure(); });
+  // re-measure once images have loaded (logo widths change layout)
+  track.querySelectorAll("img").forEach((im) => {
+    if (!im.complete) im.addEventListener("load", measure, { once: true });
+  });
+
+  function wrap() {
+    if (half <= 0) return;
+    if (offset <= -half) offset += half;
+    if (offset > 0) offset -= half;
+  }
+
+  function frame(now) {
+    const dt = Math.min(50, now - last); last = now;
+    if (!paused && nudge === 0) offset -= SPEED * (dt / 16.67);
+    if (nudge !== 0) {
+      const step = nudge * 0.12;          // ease toward target
+      offset += step;
+      nudge -= step;
+      if (Math.abs(nudge) < 0.5) { offset += nudge; nudge = 0; }
+    }
+    wrap();
+    track.style.transform = "translateX(" + offset.toFixed(2) + "px)";
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+
+  marquee.addEventListener("mouseenter", () => { paused = true; });
+  marquee.addEventListener("mouseleave", () => { paused = false; });
+
+  const jump = 3 * 226;                    // ~3 logos per click
+  if (prevBtn) prevBtn.addEventListener("click", () => { nudge += jump; });
+  if (nextBtn) nextBtn.addEventListener("click", () => { nudge -= jump; });
 })();
 
 /* -------------------------------------------------------------
