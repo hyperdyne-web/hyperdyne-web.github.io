@@ -194,6 +194,7 @@ setInterval(rotateHero, 2500);
     { en: "assets/partners/kiria_en.png", ko: "assets/partners/kiria_ko.png", name: "KIRIA", cls: "lg-kiria" },
     { en: "assets/partners/repa_en.png",  ko: "assets/partners/repa_ko.png",  name: "REPA", cls: "lg-wide" },
     { en: "assets/partners/yu_en.png",    ko: "assets/partners/yu_ko.png",    name: "Yeungnam University" },
+    { common: "assets/brand/nvidia_inception.svg", name: "NVIDIA Inception Program", cls: "lg-nv" },
   ];
   const makeItem = (entry) => {
     const card = document.createElement("div");
