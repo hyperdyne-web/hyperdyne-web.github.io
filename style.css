@@ -468,16 +468,20 @@ img { display: block; max-width: 100%; }
 }
 body.lang-ko .hero-cta .cat-en { order: 2; }
 body.lang-ko .hero-cta .cat-ko { order: 1; }
+/* the robot-module catalog always sits last */
+.hero-cta .cat-robot { order: 3; }
 
 /* active-language catalog button = filled white; the other = ghost outline */
 .hero-cta .cat-en,
-.hero-cta .cat-ko {
+.hero-cta .cat-ko,
+.hero-cta .cat-robot {
   background: transparent;
   color: var(--fg);
   border-color: var(--line-2);
 }
 .hero-cta .cat-en:hover,
-.hero-cta .cat-ko:hover {
+.hero-cta .cat-ko:hover,
+.hero-cta .cat-robot:hover {
   background: rgba(255, 255, 255, 0.06);
   border-color: var(--fg);
   color: var(--fg);
